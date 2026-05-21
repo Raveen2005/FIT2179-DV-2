@@ -1,0 +1,60 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Population Density Growth in Victoria",
+  "width": 700,
+  "height": 350,
+
+  "data": {
+    "url": "data/Region summary_ Victoria STE 2.csv"
+  },
+
+  "transform": [
+    {
+      "filter": "datum.Description == 'Population density (persons/km2)'"
+    },
+    {
+      "fold": [
+        "2011",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024"
+      ],
+      "as": ["Year", "Density"]
+    },
+    {
+      "calculate": "toNumber(datum.Density)",
+      "as": "PopulationDensity"
+    }
+  ],
+
+  "mark": {
+    "type": "line",
+    "point": true,
+    "interpolate": "monotone"
+  },
+
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "ordinal",
+      "title": "Year"
+    },
+    "y": {
+      "field": "PopulationDensity",
+      "type": "quantitative",
+      "title": "Persons per km²",
+      "scale": {"zero": false}
+    },
+    "tooltip": [
+      {"field": "Year", "title": "Year"},
+      {"field": "PopulationDensity", "title": "Population density"}
+    ]
+  }
+}
